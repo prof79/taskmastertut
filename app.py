@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 # app.py
 # Task Master Tutorial Flask App Main
-# v0.1.0
+# v0.2.0
 
 """Task Master Flask tutorial web application allows to maintain
 a list of tasks using respective CRUD operations
 (create, read, update, delete)."""
 
 
-from flask import Flask
+from flask import Flask, render_template
 
 
 app = Flask(__name__)
@@ -19,7 +19,7 @@ def index():
     """Flask controller for the root/index endpoint (/)
     of the web application.
     """
-    return 'Hello world!'
+    return render_template('index.html')
 
 
 if __name__ == '__main__':

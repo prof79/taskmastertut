@@ -1,12 +1,19 @@
 #!/usr/bin/env python3
 # app.py
 # Task Master Tutorial Flask App Main
-# v0.9.0
 # pylint: disable=too-few-public-methods
 
 """Task Master Flask tutorial web application allows to maintain
 a list of tasks using respective CRUD operations
 (create, read, update, delete)."""
+
+__version__ = '0.9.1'
+
+__author__ = 'Markus M. Egger'
+__credits__ = ['Jake Rieger', 'WilsonPhooYK']
+__copyright__ = 'Copyright (C) 2021 by Markus M. Egger'
+__license__ = 'BSD-3'
+__status__ = 'Development'
 
 
 import os
@@ -55,8 +62,8 @@ class Task(Model):
 
 @app.route('/')
 def index():
-    """Flask controller for the root/index endpoint (/)
-    of the web application.
+    """Main (root, index) endpoint of the application displaying
+    the list of tasks and possible interactions.
     """
     if not session.get('DATABASE_SETUP', default=False):
         return redirect(url_for('setup'))
@@ -76,7 +83,7 @@ def index():
 @app.route('/setup')
 def setup():
     """Initializes the SQLite database based on a session
-    variable or force query parameter.
+    variable or the "force" query parameter.
     """
     force: bool = request.args.get('force', None) is not None
     
@@ -120,6 +127,7 @@ def add():
 
 @app.route('/remove/<int:id>')
 def remove(id: int):
+    """Remove an existing task or yield an error."""
     task_to_remove = Task.query.get_or_404(id)
 
     try:
@@ -135,7 +143,11 @@ def remove(id: int):
 
 @app.route('/update/<int:id>', methods=['GET', 'POST'])
 def update(id: int):
-
+    """Update the description of an existing task.
+    
+    The new task description must neither be empty nor
+    identical to the old one.
+    """
     update_message = session.pop('update_message', '')
 
     task: Task = Task.query.get_or_404(id)

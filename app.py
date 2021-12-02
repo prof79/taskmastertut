@@ -106,6 +106,21 @@ def add():
     return redirect(url_for('index'))
 
 
+@app.route('/remove/<int:id>')
+def remove(id: int):
+    task_to_remove = Task.query.get_or_404(id)
+
+    try:
+        db.session.delete(task_to_remove)
+        db.session.commit()
+        message = 'Task removed successfully.'
+    except Exception as ex:
+        message = f'Error removing task: {ex}'
+    
+    session['message'] = message
+    return redirect(url_for('index'))
+
+
 if __name__ == '__main__':
     """Main entry point for the application."""
     app.run(debug=True)

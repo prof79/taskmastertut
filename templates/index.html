@@ -12,6 +12,8 @@
 
         <h1>Task Master</h1>
         
+        <p>&nbsp;</p>
+        
         <div id="task_list">
 
             {% if tasks|length < 1 %}
@@ -22,16 +24,16 @@
 
                 <table class="center table">
                     <tr>
-                        <th>Content</th>
-                        <th>Created</th>
+                        <th>Task</th>
+                        <th>Added</th>
                         <th>Actions</th>
                     </tr>
 
                     {% for task in tasks %}
 
                         <tr>
-                            <td>{{ task.content }}</td>
-                            <td>{{ task.created }}</td>
+                            <td class="taskcell">{{ task.content }}</td>
+                            <td class="addedcell">{{ task.created.strftime('%Y-%m-%d %H:%M:%S UTC') }}</td>
                             <td>
                                 <a href="/update/{{task.id}}">Update</a><br><br>
                                 <a href="/remove/{{task.id}}">Remove</a>

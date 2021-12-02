@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # app.py
 # Task Master Tutorial Flask App Main
-# v0.6.2
+# v0.7.0
 # pylint: disable=too-few-public-methods
 
 """Task Master Flask tutorial web application allows to maintain
@@ -42,6 +42,13 @@ class Task(Model):
     created: datetime = db.Column(db.DateTime, default=datetime.utcnow)
     completed: bool = db.Column(db.Boolean, default=False)
 
+    def __init__(self, content: str) -> None:
+        super().__init__()
+        self.content = content
+
+    def __repr__(self):
+        return f'<Task {self.id}>'
+
 
 @app.route('/')
 def index():
@@ -56,7 +63,7 @@ def index():
     tasks = []
 
     try:
-        tasks = db.session.query(Task).all()
+        tasks = Task.query.order_by(Task.created).all()
     except Exception as ex:
         '<br>'.join([message, f'Database error: {ex}'])
 
@@ -92,8 +99,7 @@ def add():
 
     if task_content:
         try:
-            task = Task()
-            task.content = task_content
+            task = Task(content=task_content)
             db.session.add(task)
             db.session.commit()
             message = 'Task added successfully.'

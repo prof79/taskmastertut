@@ -1,6 +1,17 @@
 body {
-    font-family:Verdana, Geneva, Tahoma, sans-serif;
     margin: 4em;
+}
+
+body, input {
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+}
+
+input {
+    padding: 0.4em;
+}
+
+input[type="text"] {
+    width: 30em;
 }
 
 .center {
@@ -19,6 +30,10 @@ body {
     border-collapse: collapse;
 }
 
-input[type="text"] {
-    width: 30em;
+.taskcell {
+    min-width: 20em;
+}
+
+.addedcell {
+    width: 8em;
 }

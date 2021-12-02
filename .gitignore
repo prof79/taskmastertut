@@ -142,3 +142,4 @@ cython_debug/
 .vscode/settings.json
 db/
 temp/
+tasks.db

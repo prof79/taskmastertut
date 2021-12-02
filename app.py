@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # app.py
 # Task Master Tutorial Flask App Main
-# v0.7.0
+# v0.9.0
 # pylint: disable=too-few-public-methods
 
 """Task Master Flask tutorial web application allows to maintain
@@ -131,6 +131,39 @@ def remove(id: int):
     
     session['message'] = message
     return redirect(url_for('index'))
+
+
+@app.route('/update/<int:id>', methods=['GET', 'POST'])
+def update(id: int):
+
+    update_message = session.pop('update_message', '')
+
+    task: Task = Task.query.get_or_404(id)
+    
+    if request.method == 'GET':
+        return render_template('update.html', task=task, update_message=update_message)
+
+    else:
+        new_content = request.form.get('content', default='').strip()
+
+        if new_content and new_content != task.content:
+            try:
+                task.content = new_content
+                db.session.commit()
+                update_message = 'Task updated successfully.'
+                session['message'] = update_message
+                return redirect(url_for('index'))
+            except Exception as ex:
+                update_message = f'Error updating task: {ex}'
+
+        else:
+            if not new_content:
+                update_message = 'Task description must not be empty.'
+            else:
+                update_message = 'Task description must not be identical.'
+
+    session['update_message'] = update_message
+    return redirect(url_for('update', id=id))
 
 
 if __name__ == '__main__':

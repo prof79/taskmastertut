@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block head %}
+
+    <title>Task Master</title>
+
+{% endblock %}
+
+{% block body %}
+
+    <div id="page_content" class="center">
+
+        <h1>Update Task</h1>
+
+        <p>&nbsp;</p>
+
+        <div id="task_update">
+            <form action="/update/{{ task.id }}" method="post">
+                <input type="text" id="content" name="content" value="{{ task.content }}"><br><br>
+                <input type="submit" id="submit" name="submit" value="Update Task">
+                <input type="button" id="cancel" name="cancel" value="Cancel" onclick="window.location.href='{{ url_for('index') }}'">
+            </form>
+        </div>
+
+        <p>&nbsp;</p>
+
+        <div id="message_output"><h4>{{ update_message }}</h4></div>
+
+    </div>
+
+{% endblock %}

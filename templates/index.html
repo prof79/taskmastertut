@@ -14,6 +14,14 @@
 
         <p>&nbsp;</p>
 
+        <div id="message_output"><h4>{{ message }}</h4></div>
+
+        {% if message %}
+
+            <p>&nbsp;</p>
+
+        {% endif %}
+
         <div id="task_list">
 
             {% if tasks|length < 1 %}
@@ -58,8 +66,6 @@
         </div>
 
         <p>&nbsp;</p>
-
-        <div id="message_output"><h4>{{ message }}</h4></div>
 
     </div>
 

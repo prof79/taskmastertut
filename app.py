@@ -72,10 +72,9 @@ def add():
             task.content = task_content
             db.session.add(task)
             db.session.commit()
+            message = 'Task added successfully.'
         except Exception as ex:
             message = f'Error adding task: {ex}'
-        finally:
-            message = 'Task added successfully.'
     else:
         message = 'Task description must not be empty.'
 

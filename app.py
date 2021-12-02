@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # app.py
 # Task Master Tutorial Flask App Main
-# v0.6.0
+# v0.6.2
 # pylint: disable=too-few-public-methods
 
 """Task Master Flask tutorial web application allows to maintain
@@ -12,6 +12,7 @@ a list of tasks using respective CRUD operations
 import os
 
 from datetime import datetime
+from pathlib import Path
 from typing import cast
 
 from flask import Flask, render_template, redirect, request, session, url_for
@@ -22,7 +23,7 @@ from typings.sql_alchemy import SQLAlchemy as SQLAlchemyStub
 
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db/tasks.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///tasks.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # Required for session support
 app.secret_key = os.environ['SESSION_KEY']

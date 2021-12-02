@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # app.py
 # Task Master Tutorial Flask App Main
-# v0.5.0
+# v0.6.0
 # pylint: disable=too-few-public-methods
 
 """Task Master Flask tutorial web application allows to maintain
@@ -14,7 +14,7 @@ import os
 from datetime import datetime
 from typing import cast
 
-from flask import Flask, render_template, redirect, request, session
+from flask import Flask, render_template, redirect, request, session, url_for
 from flask_sqlalchemy import SQLAlchemy
 
 # See typings/__init__.py for more information
@@ -47,6 +47,9 @@ def index():
     """Flask controller for the root/index endpoint (/)
     of the web application.
     """
+    if not session.get('DATABASE_SETUP', default=False):
+        return redirect(url_for('setup'))
+
     message = session.pop('message', default='')
 
     tasks = []
@@ -57,6 +60,24 @@ def index():
         '<br>'.join([message, f'Database error: {ex}'])
 
     return render_template('index.html', message=message, tasks=tasks)
+
+
+@app.route('/setup')
+def setup():
+    """Initializes the SQLite database based on a session
+    variable or force query parameter.
+    """
+    force: bool = request.args.get('force', None) is not None
+    
+    if force or not session.get('DATABASE_SETUP', default=False):
+        try:
+            db.create_all()
+            session['DATABASE_SETUP'] = True
+            session['message'] = 'Database created.'
+        except Exception as ex:
+            session['message'] = f'Database/table creation error: {ex}'
+    
+    return redirect(url_for('index'))
 
 
 @app.route('/add', methods=['POST'])
@@ -79,7 +100,7 @@ def add():
         message = 'Task description must not be empty.'
 
     session['message'] = message
-    return redirect('/')
+    return redirect(url_for('index'))
 
 
 if __name__ == '__main__':

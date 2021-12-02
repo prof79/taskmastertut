@@ -8,7 +8,57 @@
 
 {% block body %}
 
-    <h1>Task Master</h1>
-    <p>Hello templated and styled HTML!</p>
+    <div id="page_content" class="center">
+
+        <h1>Task Master</h1>
+        
+        <div id="task_list">
+
+            {% if tasks|length < 1 %}
+            
+                <h4>There are not any tasks yet. Add one below.</h4>
+
+            {% else %}
+
+                <table class="center table">
+                    <tr>
+                        <th>Content</th>
+                        <th>Created</th>
+                        <th>Actions</th>
+                    </tr>
+
+                    {% for task in tasks %}
+
+                        <tr>
+                            <td>{{ task.content }}</td>
+                            <td>{{ task.created }}</td>
+                            <td>
+                                <a href="/update/{{task.id}}">Update</a><br><br>
+                                <a href="/remove/{{task.id}}">Remove</a>
+                            </td>
+                        </tr>
+                        
+                    {% endfor %}
+
+                </table>
+
+            {% endif %}
+
+        </div>
+
+        <p>&nbsp;</p>
+
+        <div id="task_input">
+            <form action="/add" method="post">
+                <input type="text" id="content" name="content" value=""><br><br>
+                <input type="submit" id="submit" name="submit" value="Add Task">
+            </form>
+        </div>
+
+        <p>&nbsp;</p>
+
+        <div id="message_output"><h4>{{ message }}</h4></div>
+
+    </div>
 
 {% endblock %}

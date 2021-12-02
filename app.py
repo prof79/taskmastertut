@@ -70,9 +70,11 @@ def setup():
     force: bool = request.args.get('force', None) is not None
     
     if force or not session.get('DATABASE_SETUP', default=False):
+        # Prevent an endless redirection cycle on error
+        # regardless of the result of create_all()
+        session['DATABASE_SETUP'] = True
         try:
             db.create_all()
-            session['DATABASE_SETUP'] = True
             session['message'] = 'Database created.'
         except Exception as ex:
             session['message'] = f'Database/table creation error: {ex}'

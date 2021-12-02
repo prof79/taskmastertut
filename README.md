@@ -1,6 +1,6 @@
 # Task Master Web App
 
-My version of the Flask web app from the great [freeCodeCamp.org](https://freeCodeCamp.org) tutorial at [https://www.youtube.com/watch?v=Z1RJmh_OqeA].
+My version of the Flask web app from the great [freeCodeCamp.org](https://freeCodeCamp.org) tutorial at [https://www.youtube.com/watch?v=Z1RJmh_OqeA]. Kudos to [https://github.com/jakerieger](Jake Rieger) for the tutorial.
 
 Live app: [https://taskmastertut.herokuapp.com]
 

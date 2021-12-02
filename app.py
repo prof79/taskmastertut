@@ -22,6 +22,9 @@ from flask_sqlalchemy import SQLAlchemy
 from typings.sql_alchemy import SQLAlchemy as SQLAlchemyStub
 
 
+TASK_LIMIT = 10
+
+
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///tasks.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -97,16 +100,19 @@ def add():
 
     message = ''
 
-    if task_content:
-        try:
-            task = Task(content=task_content)
-            db.session.add(task)
-            db.session.commit()
-            message = 'Task added successfully.'
-        except Exception as ex:
-            message = f'Error adding task: {ex}'
+    if Task.query.count() >= TASK_LIMIT:
+        message = f'Sorry, no more than {TASK_LIMIT} tasks allowed.'
     else:
-        message = 'Task description must not be empty.'
+        if task_content:
+            try:
+                task = Task(content=task_content)
+                db.session.add(task)
+                db.session.commit()
+                message = 'Task added successfully.'
+            except Exception as ex:
+                message = f'Error adding task: {ex}'
+        else:
+            message = 'Task description must not be empty.'
 
     session['message'] = message
     return redirect(url_for('index'))
